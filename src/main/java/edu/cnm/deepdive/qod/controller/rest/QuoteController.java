@@ -1,5 +1,6 @@
-package edu.cnm.deepdive.qod.controller;
+package edu.cnm.deepdive.qod.controller.rest;
 
+import edu.cnm.deepdive.qod.controller.SearchTermTooShortException;
 import edu.cnm.deepdive.qod.model.entity.Quote;
 import edu.cnm.deepdive.qod.model.entity.Source;
 import edu.cnm.deepdive.qod.service.QuoteRepository;
@@ -7,6 +8,7 @@ import edu.cnm.deepdive.qod.service.SourceRepository;
 import java.net.URI;
 import java.util.Objects;
 import java.util.UUID;
+import javax.management.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
@@ -61,6 +63,16 @@ public class QuoteController {
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public Quote get(@PathVariable UUID id) {
     return quoteRepository.findById(id).get();
+  }
+
+  @GetMapping(value = "/random", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Quote getRandom() {
+    return quoteRepository.getRandom().get();
+  }
+
+  @GetMapping(value = "/random", produces = MediaType.TEXT_PLAIN_VALUE)
+  public String getRandomPlain() {
+    return getRandom().getText();
   }
 
   @PutMapping(value = "/{id}",
